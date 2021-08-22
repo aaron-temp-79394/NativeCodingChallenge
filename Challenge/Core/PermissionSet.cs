@@ -2,25 +2,36 @@ using System;
 using System.Linq;
 
 namespace Challenge {
+    /// <summary>
+    /// <para>Holds fixed list of 100 user permissions. Permissions follow unix convention:</para>
+    /// <para>0 No Permission</para>
+    /// <para>1 Execute</para>
+    /// <para>2 Write</para>
+    /// <para>3 Execute + Write</para>
+    /// <para>4 Read</para>
+    /// <para>5 Read + Execute</para>
+    /// <para>6 Read +Write</para>
+    /// </summary>
     public class PermissionSet : IEquatable<PermissionSet> {
-        // permission is byte, following unix convention:
-        /*
-         * 0 No Permission
-         * 1 Execute
-         * 2 Write
-         * 3 Execute + Write
-         * 4 Read
-         * 5 Read + Execute
-         * 6 Read +Write
-         * 7 Read + Write +Execute
-         */
         // initializes to all 0's
+        /// <summary>
+        /// User permissions
+        /// </summary>
         public byte[] Permissions = new byte[100];
 
+        /// <summary>
+        /// Serialize
+        /// </summary>
+        /// <returns>Byte array</returns>
         public byte[] Serialize() {
             return Permissions;
         }
 
+        /// <summary>
+        /// Deserialize
+        /// </summary>
+        /// <param name="bytes">Byte array</param>
+        /// <returns>PermissionSet</returns>
         public static PermissionSet Deserialize(byte[] bytes) {
             // guards
             if (bytes == null) throw new ArgumentNullException(nameof(bytes));
@@ -49,6 +60,10 @@ namespace Challenge {
             PermissionSet psObj = obj as PermissionSet;
             if (psObj == null) return false;
             else return Equals(psObj);
+        }
+
+        public override int GetHashCode() {
+            return Permissions.GetHashCode();
         }
 
         public static bool operator ==(PermissionSet ps1, PermissionSet ps2) {
